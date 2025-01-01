@@ -1,0 +1,39 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		},
+	],
+	"build_systems":
+	[
+		{
+			"file_regex": "^(.+)\\(([0-9]+):([0-9]+)\\) (.+)$",
+			"name": "Odin + Raylib + WASM build",
+			"cmd": "build_web.bat",
+			"working_dir": "$project_path",
+
+			"variants": [
+				{
+					"name": "run",
+					"cmd": "build_web.bat && game_web\\index.html",
+				},
+				{
+					"name": "desktop + run",
+					"cmd": "build_desktop.bat && game_desktop.exe",
+				},
+			],
+		}
+	],
+	"settings":
+	{
+		"auto_complete": false,
+		"LSP":
+		{
+			"odin":
+			{
+				"enabled": true,
+			},
+		},
+	},
+}

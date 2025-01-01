@@ -1,0 +1,16 @@
+*.exe
+*.sublime-workspace
+*.pdb
+*.raddbgi
+*.raddbg
+*.dll
+*.exp
+*.rdi
+*.obj
+*.lib
+log.txt
+*.bin
+*.dylib
+*.so
+*.dSYM
+game_web/
