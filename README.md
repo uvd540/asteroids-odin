@@ -20,5 +20,5 @@ You can't use:
 - `core:os`
 - Procedures in `core:fmt` that print to console (you can use `fmt.tprint` etc).
 
-## Ackknowledgements
-Thie repository helped me a bit with the initial setup and logger setup: https://github.com/Aronicu/Raylib-WASM
+## Acknowledgements
+This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
