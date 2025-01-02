@@ -25,3 +25,8 @@ You can't use:
 
 ## Acknowledgements
 This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
+
+## TODO:
+- Add assets loading (you can also use #load, as game.odin shows)
+- Organize main_web and main_desktop into directories (I think)
+- Add build scripts for mac / linux
