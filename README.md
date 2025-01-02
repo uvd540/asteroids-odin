@@ -21,7 +21,7 @@ You can also build a desktop executable using `build_desktop.bat`
 
 You can't use:
 - `core:os`
-- Procedures in `core:fmt` that print to console. There's a pre-setup loger instead `core:log`, I suggest you use that. Als, you can still use `fmt.tprint` to format strings.
+- Procedures in `core:fmt` that print to console. There's a pre-setup loger instead `core:log`, I suggest you use that. Also, you can still use `fmt.tprint` to format strings.
 
 ## Acknowledgements
 This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
