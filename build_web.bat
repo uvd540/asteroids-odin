@@ -13,7 +13,7 @@ IF %ERRORLEVEL% NEQ 0 exit /b 1
 
 for /f %%i in ('odin root') do set "ODIN_PATH=%%i"
 
-set files=main_wasm.c %OUT_DIR%/game.wasm.o %ODIN_PATH%\vendor\raylib\wasm\libraylib.a  %ODIN_PATH%\vendor\raylib\wasm\libraygui.a
+set files=main_web.c %OUT_DIR%/game.wasm.o %ODIN_PATH%\vendor\raylib\wasm\libraylib.a  %ODIN_PATH%\vendor\raylib\wasm\libraygui.a
 set flags=-sUSE_GLFW=3 -sASYNCIFY -sASSERTIONS -DPLATFORM_WEB 
 set custom=--shell-file index_template.html
 emcc -o %OUT_DIR%/index.html %files% %flags% %custom% && del %OUT_DIR%\game.wasm.o

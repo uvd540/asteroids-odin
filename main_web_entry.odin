@@ -20,7 +20,7 @@ wasm_context: runtime.Context
 @thread_local temp_allocator: WASM_Temp_Allocator
 
 @export
-wasm_init :: proc "c" () {
+web_init :: proc "c" () {
 	context = runtime.default_context()
 	context.allocator = rl.MemAllocator()
 
@@ -33,12 +33,12 @@ wasm_init :: proc "c" () {
 }
 
 @export
-wasm_update :: proc "c" () {
+web_update :: proc "c" () {
 	context = wasm_context
 	game_update()
 }
 
 @export
-wasm_window_size_changed :: proc "c" (w: c.int, h: c.int) {
+web_window_size_changed :: proc "c" (w: c.int, h: c.int) {
 	rl.SetWindowSize(w, h)
 }
