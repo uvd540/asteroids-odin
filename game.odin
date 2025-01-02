@@ -28,7 +28,7 @@ game_update :: proc() {
 	}
 
 	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {
-		rl.OpenURL("https://github.com/karl-zylinski/odin-raylib-wasm")
+		rl.OpenURL("https://github.com/karl-zylinski/odin-raylib-web")
 	}
 
 	rl.EndDrawing()
