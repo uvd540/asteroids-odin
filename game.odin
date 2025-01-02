@@ -8,7 +8,7 @@ texture: rl.Texture
 
 game_init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
-	rl.InitWindow(1280, 720, "Raylib Web Example")
+	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
 
 	// Set up sample texture
 	img := rl.LoadImageFromMemory(".png", raw_data(TEXTURE_DATA), i32(len(TEXTURE_DATA)))
