@@ -1,6 +1,6 @@
 ![image](https://github.com/user-attachments/assets/69f9568c-8eee-45ba-bb83-9845d323e9a1)
 
-Live example: https://zylinski.se/odin-raylib-wasm/
+Live example: https://zylinski.se/odin-raylib-web/
 
 Make games using Odin + Raylib that work in browser and on desktop.
 
