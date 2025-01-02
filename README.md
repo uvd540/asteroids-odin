@@ -1,6 +1,6 @@
-![image](https://github.com/user-attachments/assets/69f9568c-8eee-45ba-bb83-9845d323e9a1)
+![image](https://github.com/user-attachments/assets/0ed449ff-ae6f-4336-aa26-02df5928f263)
 
-Live example: https://zylinski.se/odin-raylib-wasm/
+Live example: https://zylinski.se/odin-raylib-web/
 
 Make games using Odin + Raylib that work in browser and on desktop.
 
@@ -25,3 +25,8 @@ You can't use:
 
 ## Acknowledgements
 This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
+
+## TODO:
+- Add assets loading (you can also use #load, as game.odin shows)
+- Organize main_web and main_desktop into directories (I think)
+- Add build scripts for mac / linux
