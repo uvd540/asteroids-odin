@@ -13,7 +13,7 @@ Live example: https://zylinski.se/odin-raylib-web/
 
 ## Getting started
 
-1. Change `EMSCRIPTEN_SDK_DIR` in `build_web.bat/sh` to point to your emscripten setup. Optional if emscripten is already in your PATH.
+1. Change `EMSCRIPTEN_SDK_DIR` in `build_web.bat/sh` to point to your emscripten setup.
 2. Run `build_web.bat/sh`.
 3. Web game is in the `build/web` folder.
 
