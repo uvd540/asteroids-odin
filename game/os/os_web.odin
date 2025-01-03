@@ -63,7 +63,7 @@ _read_entire_file :: proc(name: string, allocator := context.allocator, loc := #
 	data, data_err = make([]byte, size, allocator, loc)
 
 	if data_err != nil {
-		log.errorf("Error alloating memory: %v", data_err)
+		log.errorf("Error allocating memory: %v", data_err)
 		return
 	}
 
@@ -74,7 +74,6 @@ _read_entire_file :: proc(name: string, allocator := context.allocator, loc := #
 	}
 
 	log.debugf("Successfully loaded %v", name)
-
 	return data, true
 }
 
@@ -95,17 +94,19 @@ _write_entire_file :: proc(name: string, data: []byte, truncate := true) -> (suc
 
 	if file == nil {
 		log.errorf("Failed to open '%v' for writing", name)
+		return
 	}
 
 	bytes_written := fwrite(raw_data(data), 1, len(data), file)
 
 	if bytes_written == 0 {
 		log.errorf("Failed to write file %v", name)
+		return
 	} else if bytes_written != len(data) {
 		log.errorf("File partially written, wrote %v out of %v bytes", bytes_written, len(data))
-	} else {
-		log.debugf("File written successfully: %v", name)
+		return
 	}
-
+	
+	log.debugf("File written successfully: %v", name)
 	return true
 }
