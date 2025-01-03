@@ -17,6 +17,12 @@ Make games using Odin + Raylib that work in browser and on desktop.
 
 You can also build a desktop executable using `build_desktop.bat`
 
+In some web browsers your game won't work due to "CORS policy", in that case you can run a local web server using python. Within `game_web`, run this:
+```
+python -m http.server
+```
+Go to `localhost:8000` in your browser to start the game.
+
 ## Limitations
 
 You can't use:
@@ -33,4 +39,7 @@ I recommend debugging native build when you can. But if you get web-only bugs th
 - Add build scripts for mac / linux
 
 ## Acknowledgements
-This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
+[This repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
+- The initial emscripten setup
+- The logger setup
+- The idea of using python to host a server
