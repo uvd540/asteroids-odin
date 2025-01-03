@@ -2,8 +2,7 @@
 This is more or less a copy of `Default_Temp_Allocator` in base:runtime (that
 one is disabled in freestanding build mode, which is the build mode used by for
 web). It just forwards everything to the arena in `base:runtime`. That arena is
-actually a special arena made just for temp allocators (it's like a virtual
-growing arena, but doesn't use virtual memory).
+actually a growing arena made just for the temp allocator.
 */
 
 package main_web

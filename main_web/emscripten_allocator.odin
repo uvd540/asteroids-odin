@@ -1,7 +1,23 @@
+/*
+This allocator uses the malloc, calloc, free and realloc procs that emscripten
+exposes in order to allocate memory. Just like Odin's default help allocator
+this uses proper alignment, so that maps and simd works.
+*/
+
 package main_web
 
 import "core:mem"
-import rl "vendor:raylib"
+import "core:c"
+
+// This create's bindings to emscriptens implementation of libc memory
+// allocation features.
+@(default_calling_convention = "c")
+foreign {
+	calloc        :: proc(num, size: c.size_t) -> rawptr ---
+	free          :: proc(ptr: rawptr) ---
+	malloc        :: proc(size: c.size_t) -> rawptr ---
+	realloc       :: proc(ptr: rawptr, size: c.size_t) -> rawptr ---
+}
 
 aligned_raylib_allocator :: proc "contextless" () -> mem.Allocator {
 	return mem.Allocator{aligned_raylib_allocator_proc, nil}
@@ -26,9 +42,11 @@ aligned_raylib_allocator_proc :: proc(
 		allocated_mem: rawptr
 		if old_ptr != nil {
 			original_old_ptr := mem.ptr_offset((^rawptr)(old_ptr), -1)^
-			allocated_mem = rl.MemRealloc(original_old_ptr, u32(space+size_of(rawptr)))
+			allocated_mem = realloc(original_old_ptr, c.size_t(space+size_of(rawptr)))
+		} else if zero_memory {
+			allocated_mem = calloc(c.size_t(space+size_of(rawptr)), 1)
 		} else {
-			allocated_mem = rl.MemAlloc(u32(space+size_of(rawptr)))
+			allocated_mem = malloc(c.size_t(space+size_of(rawptr)))
 		}
 		aligned_mem := rawptr(mem.ptr_offset((^u8)(allocated_mem), size_of(rawptr)))
 
@@ -47,7 +65,7 @@ aligned_raylib_allocator_proc :: proc(
 
 	aligned_free :: proc(p: rawptr) {
 		if p != nil {
-			rl.MemFree(mem.ptr_offset((^rawptr)(p), -1)^)
+			free(mem.ptr_offset((^rawptr)(p), -1)^)
 		}
 	}
 
