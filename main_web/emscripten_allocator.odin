@@ -1,6 +1,6 @@
 /*
 This allocator uses the malloc, calloc, free and realloc procs that emscripten
-exposes in order to allocate memory. Just like Odin's default help allocator
+exposes in order to allocate memory. Just like Odin's default heap allocator
 this uses proper alignment, so that maps and simd works.
 */
 
