@@ -20,8 +20,11 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 > [!WARNING]
 > You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python:
+>
 > `python -m http.server`
+>
 > Go to `localhost:8000` to play your game.
+>
 >
 > Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python.
 
