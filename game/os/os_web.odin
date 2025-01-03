@@ -37,7 +37,7 @@ Whence :: enum c.int {
 // Similar to rl.LoadFileData
 _read_entire_file :: proc(name: string, allocator := context.allocator, loc := #caller_location) -> (data: []byte, success: bool) {
 	if name == "" {
-		log.error("Invalild file")
+		log.error("No file name provided")
 		return
 	}
 
