@@ -18,15 +18,15 @@ Make games using Odin + Raylib that works in browser and on desktop.
 > [!NOTE]
 > `build_web.bat` is for windows, `build_web.sh` is for Linux / macOS.
 
+> [!WARNING]
+> You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python:
+> `python -m http.server`
+> Go to `localhost:8000` to play your game.
+>
+> Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python.
+
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
-In some web browsers you can't test the game locally due to "CORS policy". In that case you can run a local web server using python. Go to `build/web` in a terminal and run this:
-```
-python -m http.server
-```
-Go to `localhost:8000` in your browser to start the game.
-
-> Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python.
 
 ## What works
 
