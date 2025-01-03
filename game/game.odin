@@ -2,7 +2,6 @@ package game
 
 import rl "vendor:raylib"
 import "core:log"
-import "base:runtime"
 
 texture: rl.Texture
 

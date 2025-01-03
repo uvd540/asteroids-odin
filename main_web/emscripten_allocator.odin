@@ -8,6 +8,7 @@ package main_web
 
 import "core:mem"
 import "core:c"
+import "base:intrinsics"
 
 // This create's bindings to emscriptens implementation of libc memory
 // allocation features.
@@ -44,6 +45,8 @@ aligned_raylib_allocator_proc :: proc(
 			original_old_ptr := mem.ptr_offset((^rawptr)(old_ptr), -1)^
 			allocated_mem = realloc(original_old_ptr, c.size_t(space+size_of(rawptr)))
 		} else if zero_memory {
+			// calloc automatically zeros memory, but it takes a number + size
+			// instead of just size.
 			allocated_mem = calloc(c.size_t(space+size_of(rawptr)), 1)
 		} else {
 			allocated_mem = malloc(c.size_t(space+size_of(rawptr)))
@@ -86,11 +89,27 @@ aligned_raylib_allocator_proc :: proc(
 	case .Free:
 		aligned_free(old_memory)
 		return nil, nil
-	
-	case .Resize, .Resize_Non_Zeroed:
+
+	case .Resize:
 		if old_memory == nil {
 			return aligned_alloc(size, alignment, true)
 		}
+
+		bytes := aligned_resize(old_memory, old_size, size, alignment) or_return
+
+		// realloc doesn't zero the new bytes, so we do it manually.
+		if size > old_size {
+			new_region := raw_data(bytes[old_size:])
+			intrinsics.mem_zero(new_region, size - old_size)
+		}
+
+		return bytes, nil
+
+	case .Resize_Non_Zeroed:
+		if old_memory == nil {
+			return aligned_alloc(size, alignment, false)
+		}
+
 		return aligned_resize(old_memory, old_size, size, alignment)
 
 	case .Query_Features:
