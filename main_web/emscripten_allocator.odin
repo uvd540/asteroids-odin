@@ -13,10 +13,10 @@ import "core:c"
 // allocation features.
 @(default_calling_convention = "c")
 foreign {
-	calloc        :: proc(num, size: c.size_t) -> rawptr ---
-	free          :: proc(ptr: rawptr) ---
-	malloc        :: proc(size: c.size_t) -> rawptr ---
-	realloc       :: proc(ptr: rawptr, size: c.size_t) -> rawptr ---
+	calloc  :: proc(num, size: c.size_t) -> rawptr ---
+	free    :: proc(ptr: rawptr) ---
+	malloc  :: proc(size: c.size_t) -> rawptr ---
+	realloc :: proc(ptr: rawptr, size: c.size_t) -> rawptr ---
 }
 
 aligned_raylib_allocator :: proc "contextless" () -> mem.Allocator {
