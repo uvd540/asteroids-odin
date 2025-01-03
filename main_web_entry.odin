@@ -22,7 +22,7 @@ wasm_context: runtime.Context
 @export
 web_init :: proc "c" () {
 	context = runtime.default_context()
-	context.allocator = rl.MemAllocator()
+	context.allocator = web_allocator()
 
 	wasm_temp_allocator_init(&temp_allocator, 1*mem.Megabyte)
 	context.temp_allocator = wasm_temp_allocator(&temp_allocator)
