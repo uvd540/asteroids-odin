@@ -15,7 +15,7 @@ init :: proc() {
 	texture = rl.LoadTexture("assets/round_cat.png")
 
 	// A different way of loading a texture: using `read_entire_file` that works
-	// both on desktop and web.
+	// both on desktop and web. Note the `os` import: It's not `core:os`!
 	if long_cat_data, long_cat_ok := os.read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
 		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), i32(len(long_cat_data)))
 		texture2 = rl.LoadTextureFromImage(long_cat_img)
