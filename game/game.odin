@@ -2,8 +2,10 @@ package game
 
 import rl "vendor:raylib"
 import "core:log"
+import "os"
 
 texture: rl.Texture
+texture2: rl.Texture
 
 init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
@@ -11,11 +13,20 @@ init :: proc() {
 
 	// Anything in `assets` folder is available to load.
 	texture = rl.LoadTexture("assets/round_cat.png")
+
+	// A different way of loading a texture: using `read_entire_file` that works
+	// both on desktop and web.
+	if long_cat_data, long_cat_ok := os.read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
+		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), i32(len(long_cat_data)))
+		texture2 = rl.LoadTextureFromImage(long_cat_img)
+		rl.UnloadImage(long_cat_img)
+	}
 }
 
 update :: proc() {
 	rl.BeginDrawing()
 	rl.ClearBackground({0, 120, 153, 255})
+	rl.DrawTextureEx(texture2, {270, 90}, 43, 5, rl.WHITE)
 	rl.DrawTextureEx(texture, rl.GetMousePosition(), 0, 5, rl.WHITE)
 	rl.DrawRectangleRec({0, 0, 250, 100}, rl.BLACK)
 	rl.GuiLabel({10, 10, 200, 20}, "raygui works!")
