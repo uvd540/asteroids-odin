@@ -4,35 +4,25 @@
 		{
 			"path": ".",
 		},
-		{
-			"path": "C:\\Odin\\core",
-		},
-		{
-			"path": "C:\\Odin\\base",
-		},
-		{
-			"path": "C:\\Odin\\vendor\\raylib",
-		},
-		{
-			"path": "C:\\repos\\raylib\\src"
-		},
 	],
 	"build_systems":
 	[
 		{
 			"file_regex": "^(.+)\\(([0-9]+):([0-9]+)\\) (.+)$",
-			"name": "Odin + Raylib + WASM build",
-			"cmd": "build_web.bat",
+			"name": "Odin + Raylib on the web",
 			"working_dir": "$project_path",
+
+			"windows": {
+				"cmd": "build_web.bat",
+			},
 
 			"variants": [
 				{
-					"name": "run",
-					"cmd": "build_web.bat && build\\web\\index.html",
-				},
-				{
 					"name": "desktop + run",
-					"cmd": "build_desktop.bat && build\\desktop\\game_desktop.exe",
+					"windows": {
+						"cmd": "build_desktop.bat && build\\desktop\\game_desktop.exe",
+					},
+					
 				},
 			],
 		}
