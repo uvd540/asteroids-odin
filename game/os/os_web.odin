@@ -1,3 +1,9 @@
+/*
+This implements some often-used procs from `core:os` but using the libc stuff
+that emscripten links in. I have based the implementations on similar procedures
+in raylib.
+*/
+
 #+build freestanding
 #+build wasm32, wasm64p32
 #+private
@@ -9,6 +15,7 @@ import "core:log"
 import "core:c"
 import "core:strings"
 
+// These will be linked in by emscripten.
 @(default_calling_convention = "c")
 foreign {
 	fopen  :: proc(filename, mode: cstring) -> ^FILE ---
@@ -28,6 +35,7 @@ Whence :: enum c.int {
 	END,
 }
 
+// Similar to rl.LoadFileData
 _read_entire_file :: proc(name: string, allocator := context.allocator, loc := #caller_location) -> (data: []byte, success: bool) {
 	if name == "" {
 		log.error("Invalild file")
@@ -71,6 +79,12 @@ _read_entire_file :: proc(name: string, allocator := context.allocator, loc := #
 	return data, true
 }
 
+// Similar to rl.SaveFileData.
+//
+// Note: This can save during the current session, but I don't think you can
+// save any data between sessions. So when you close the tab your saved files
+// are gone. Perhaps you could communicate back to emscripten and save a cookie.
+// Or communicate with a server and tell it to save data.
 _write_entire_file :: proc(name: string, data: []byte, truncate := true) -> (success: bool) {
 	if name == "" {
 		log.error("No file name provided")
