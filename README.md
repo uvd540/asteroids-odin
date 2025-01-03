@@ -39,7 +39,7 @@ You can also build a desktop executable using `build_desktop.bat/sh`. It will en
 - Temp allocator.
 - Logger.
 - There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package (used in `game.odin` to load a file).
-- You can load any file in the `assets` directory. That folder is merged into the wasm data file when the emscripten compiler runs. The folder is also copied to `build/desktop` when you make desktop builds.
+- You can load any file in the `assets` folder. That folder is merged into the wasm data file when the emscripten compiler runs. The assets folder is also copied to `build/desktop` when you make desktop builds.
 
 ## What won't work
 
