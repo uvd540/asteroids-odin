@@ -34,6 +34,12 @@ update :: proc() {
 	free_all(context.temp_allocator)
 }
 
+// In a web build, this is called when browser changes size. Remove the
+// `rl.SetWindowSize` call if you don't want a resizable game.
+parent_window_size_changed :: proc(w, h: int) {
+	rl.SetWindowSize(i32(w), i32(h))
+}
+
 shutdown :: proc() {
 	rl.CloseWindow()
 }

@@ -7,7 +7,6 @@ package main_web
 import "base:runtime"
 import "core:c"
 import "core:mem"
-import rl "vendor:raylib"
 import "../game"
 
 @(private="file")
@@ -39,5 +38,6 @@ web_update :: proc "c" () {
 
 @export
 web_window_size_changed :: proc "c" (w: c.int, h: c.int) {
-	rl.SetWindowSize(w, h)
+	context = web_context
+	game.parent_window_size_changed(int(w), int(h))
 }
