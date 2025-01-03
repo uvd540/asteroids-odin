@@ -1,19 +1,17 @@
-#+build !wasm32
-#+build !wasm64p32
-
-package raylib_wasm
+package main_desktop
 
 import rl "vendor:raylib"
 import "core:log"
+import "../game"
 
 main :: proc() {
 	context.logger = log.create_console_logger()
 	
-	game_init()
+	game.init()
 
 	for !rl.WindowShouldClose() {
-		game_update()
+		game.update()
 	}
 
-	game_shutdown()
+	game.shutdown()
 }

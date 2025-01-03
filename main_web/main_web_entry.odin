@@ -2,14 +2,13 @@
 These procs are the ones that will be called from `main_wasm.c`.
 */
 
-#+build wasm32, wasm64p32
-
-package raylib_wasm
+package main_web
 
 import "base:runtime"
 import "core:c"
 import "core:mem"
 import rl "vendor:raylib"
+import "../game"
 
 @(private="file")
 wasm_context: runtime.Context
@@ -29,13 +28,13 @@ web_init :: proc "c" () {
 	context.logger = create_wasm_logger()
 	wasm_context = context
 
-	game_init()
+	game.init()
 }
 
 @export
 web_update :: proc "c" () {
 	context = wasm_context
-	game_update()
+	game.update()
 }
 
 @export

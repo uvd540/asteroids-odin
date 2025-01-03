@@ -3,9 +3,7 @@ This file implements logger and temp allocator for the web build. The logger
 is based on the one found here: https://github.com/Aronicu/Raylib-WASM/tree/main
 */
 
-#+build wasm32, wasm64p32
-
-package raylib_wasm
+package main_web
 
 import "base:runtime"
 import "core:c"

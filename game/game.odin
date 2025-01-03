@@ -1,12 +1,12 @@
-package raylib_wasm
+package game
 
 import rl "vendor:raylib"
 import "core:log"
 
-TEXTURE_DATA :: #load("round_cat.png")
+TEXTURE_DATA :: #load("../round_cat.png")
 texture: rl.Texture
 
-game_init :: proc() {
+init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
 	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
 
@@ -16,7 +16,7 @@ game_init :: proc() {
 	rl.UnloadImage(img)
 }
 
-game_update :: proc() {
+update :: proc() {
 	rl.BeginDrawing()
 	rl.ClearBackground({0, 120, 153, 255})
 	rl.DrawTextureEx(texture, rl.GetMousePosition(), 0, 5, rl.WHITE)
@@ -37,7 +37,7 @@ game_update :: proc() {
 	free_all(context.temp_allocator)
 }
 
-game_shutdown :: proc() {
+shutdown :: proc() {
 	log.info("shutting down")
 	rl.CloseWindow()
 }

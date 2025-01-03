@@ -1,3 +1,3 @@
 @echo off
 
-odin build . -out:game_desktop.exe
+odin build main_desktop -out:game_desktop.exe
