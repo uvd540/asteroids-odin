@@ -3,17 +3,14 @@ package game
 import rl "vendor:raylib"
 import "core:log"
 
-TEXTURE_DATA :: #load("../round_cat.png")
 texture: rl.Texture
 
 init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
 	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
 
-	// Set up sample texture
-	img := rl.LoadImageFromMemory(".png", raw_data(TEXTURE_DATA), i32(len(TEXTURE_DATA)))
-	texture = rl.LoadTextureFromImage(img)
-	rl.UnloadImage(img)
+	// Anything in `assets` folder is available to load
+	texture = rl.LoadTexture("assets/round_cat.png")
 }
 
 update :: proc() {
@@ -38,6 +35,5 @@ update :: proc() {
 }
 
 shutdown :: proc() {
-	log.info("shutting down")
 	rl.CloseWindow()
 }
