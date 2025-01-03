@@ -27,11 +27,10 @@ You can't use:
 This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
 
 ## Debugging
-Add `-g` to  the the `emcc` line in the build script to generate debug information. Not all browsers can use this debug information. But I know Chrome can.
+I recommend debugging native build when you can. But if you get web-only bugs then you can add `-g` to  the the `emcc` line in the build script to generate debug information. This will give you callstacks with useful information. It works in Chrome, but I didn't get it to work in Firefox.
 
 ## TODO:
 - Add assets loading (you can also use #load, as game.odin shows)
-- Make allocator aligned (so map works)
 - Alternatives for running program that works in chrome (annoying to have to use server...)
 - Organize main_web and main_desktop into directories (I think)
 - Add build scripts for mac / linux
