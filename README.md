@@ -21,10 +21,7 @@ You can also build a desktop executable using `build_desktop.bat`
 
 You can't use:
 - `core:os`
-- Procedures in `core:fmt` that print to console. There's a pre-setup loger instead `core:log`, I suggest you use that. Also, you can still use `fmt.tprint` to format strings.
-
-## Acknowledgements
-This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
+- Procedures in `core:fmt` that print to console. There's a pre-setup loger instead `core:log`, I suggest you use that, for example `log.info("message")` and `log.infof("formatted message: %v", some_string)`. Note: You can still use `fmt.tprint` to format strings.
 
 ## Debugging
 I recommend debugging native build when you can. But if you get web-only bugs then you can add `-g` to  the the `emcc` line in the build script to generate debug information. This will give you callstacks with useful information. It works in Chrome, but I didn't get it to work in Firefox.
@@ -34,3 +31,6 @@ I recommend debugging native build when you can. But if you get web-only bugs th
 - Alternatives for running program that works in chrome (annoying to have to use server...)
 - Organize main_web and main_desktop into directories (I think)
 - Add build scripts for mac / linux
+
+## Acknowledgements
+This repository helped me with the initial emscripten and logger setup: https://github.com/Aronicu/Raylib-WASM
