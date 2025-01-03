@@ -15,7 +15,7 @@ import "core:strings"
 
 Web_Logger_Opts :: log.Options{.Level, .Short_File_Path, .Line}
 
-create_wasm_logger :: proc (lowest := log.Level.Debug, opt := Web_Logger_Opts) -> log.Logger {
+create_web_logger :: proc (lowest := log.Level.Debug, opt := Web_Logger_Opts) -> log.Logger {
 	return log.Logger{data = nil, procedure = web_logger_proc, lowest_level = lowest, options = opt}
 }
 

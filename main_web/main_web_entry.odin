@@ -11,7 +11,7 @@ import rl "vendor:raylib"
 import "../game"
 
 @(private="file")
-wasm_context: runtime.Context
+web_context: runtime.Context
 
 // I'm not sure @thread_local works with WASM. We'll see if anyone makes a
 // multi-threaded WASM game!
@@ -25,15 +25,15 @@ web_init :: proc "c" () {
 
 	default_temp_allocator_init(&temp_allocator, 1*mem.Megabyte)
 	context.temp_allocator = default_temp_allocator(&temp_allocator)
-	context.logger = create_wasm_logger()
-	wasm_context = context
+	context.logger = create_web_logger()
+	web_context = context
 
 	game.init()
 }
 
 @export
 web_update :: proc "c" () {
-	context = wasm_context
+	context = web_context
 	game.update()
 }
 
