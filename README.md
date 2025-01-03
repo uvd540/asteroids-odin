@@ -39,15 +39,15 @@ Go to `localhost:8000` in your browser to start the game.
 
 ## What won't work
 
-- Anything from `core:os` that isn't in `game/os` package.
+- Anything from `core:os` that isn't in the `game/os` package.
 - `fmt.print` and similar procs. Instead, use `log.info` and `log.infof`. Note: `fmt.tprintf` (temp string formatting) still works!
 
 ## Debugging
 
-I recommend debugging native build when you can. But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
+I recommend debugging a native build when you can. But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
 
 ## TODO:
-- Alternatives for running program that works in chrome (annoying to have to use server...)
+- Alternatives for running program that works in Chrome (annoying to have to use server...)
 
 ## Acknowledgements
 [Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
