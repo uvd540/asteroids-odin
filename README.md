@@ -43,6 +43,9 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 - There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package. It's used in `game.odin` to load a file.
 - You can load any file in the `assets` folder.
 
+> [!NOTE]
+> The files written using `write_entire_file` don't really exist outside the browser. They don't survive closing the tab. But you can write a file and load it within the same session. You can use it to make your old desktop code run, even though it won't be possible to _really_ save anything.
+
 ## What won't work
 
 - Anything from `core:os` that isn't in the `game/os` package.
