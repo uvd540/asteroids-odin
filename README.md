@@ -47,7 +47,7 @@ You can also build a desktop executable using `build_desktop.bat/sh`. It will en
 
 ## Debugging
 
-I recommend debugging a native build when you can. But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
+I recommend debugging the desktop build when you can (add `-debug` inside `build_desktop.bat/sh` and use for example [RAD Debugger](https://github.com/EpicGamesExt/raddebugger)). But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
 
 ## TODO:
 - Alternatives for running program that works in Chrome (annoying to have to use server...)
