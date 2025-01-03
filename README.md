@@ -78,6 +78,10 @@ Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper i
 ## TODO:
 - Alternatives for running program that works in Chrome (annoying to have to use server...)
 
+## Questions?
+
+Ask questions in my gamedev Discord: https://discord.gg/4FsHgtBmFK
+
 ## Acknowledgements
 [Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
 - The initial emscripten setup
