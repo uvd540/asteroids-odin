@@ -15,12 +15,24 @@
 			"windows": {
 				"cmd": "build_web.bat",
 			},
+			"linux": {
+				"cmd": "./build_web.sh",
+			},
+			"osx": {
+				"cmd": "./build_web.sh",
+			},
 
 			"variants": [
 				{
 					"name": "desktop + run",
 					"windows": {
 						"cmd": "build_desktop.bat && build\\desktop\\game_desktop.exe",
+					},
+					"linux": {
+						"shell_cmd": "./build_desktop.sh && build/desktop/game_desktop.bin",
+					},
+					"osx": {
+						"shell_cmd": "./build_desktop.sh && build/desktop/game_desktop.bin",
 					},
 					
 				},

@@ -22,3 +22,5 @@ custom="--shell-file main_web/index_template.html --preload-file assets"
 # shellcheck disable=SC2086
 # Add `-g` to `emcc` call to enable debug symbols (works in chrome).
 emcc -o $OUT_DIR/index.html $files $flags $custom && rm $OUT_DIR/game.wasm.o
+
+echo "Web build created in ${OUT_DIR}"
