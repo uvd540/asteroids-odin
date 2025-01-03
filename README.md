@@ -21,14 +21,13 @@ Live example: https://zylinski.se/odin-raylib-web/
 > `build_web.bat` is for windows, `build_web.sh` is for Linux / macOS.
 
 > [!WARNING]
-> You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python:
->
+> You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python. Go into `build/web` and run:
+> 
 > `python -m http.server`
 >
 > Go to `localhost:8000` to play your game.
 >
->
-> _Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python._
+> _If you don't have python, then emscripten actually comes with it. Look in the `python` folder of where you installed emscripten._
 
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
@@ -74,9 +73,6 @@ The allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` 
 There's also a logger that uses the `puts` procedure that emscripten exposes, in order to print to the web browser console.
 
 Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `game/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
-
-## TODO:
-- Alternatives for running program that works in Chrome (annoying to have to use server...)
 
 ## Web build in my Hot Reload template
 
