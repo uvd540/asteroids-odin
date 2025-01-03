@@ -25,11 +25,11 @@
 			"variants": [
 				{
 					"name": "run",
-					"cmd": "build_web.bat && game_web\\index.html",
+					"cmd": "build_web.bat && build\\web\\index.html",
 				},
 				{
 					"name": "desktop + run",
-					"cmd": "build_desktop.bat && game_desktop.exe",
+					"cmd": "build_desktop.bat && build\\desktop\\game_desktop.exe",
 				},
 			],
 		}
