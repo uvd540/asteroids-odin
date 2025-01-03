@@ -2,7 +2,7 @@
 
 Live example: https://zylinski.se/odin-raylib-web/
 
-Make games using Odin + Raylib that work in browser and on desktop.
+Make games using Odin + Raylib that works in browser and on desktop.
 
 ## Requirements
 
@@ -27,11 +27,11 @@ Go to `localhost:8000` in your browser to start the game.
 
 ## What works
 
-- raylib, raygui, rlgl
-- Allocator that works with maps and SIMD
-- Temp allocator
-- Logger
-- Most of `core` that doesn't do OS-specific things
+- raylib, raygui, rlgl using the default `vendor:raylib` bindings.
+- Allocator that works with maps and SIMD.
+- Temp allocator.
+- Logger.
+- Most of `core` that doesn't do OS-specific things.
 
 ## What won't work
 
