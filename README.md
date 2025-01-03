@@ -11,11 +11,14 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 ## Getting started
 
-1. Change `set EMSCRIPTEN_SDK_DIR=c:\emsdk` in `build_web.bat` to point to your emscripten setup.
-2. Run `build_web.bat`
-3. Web game is in the `build/web` folder
+1. Change `EMSCRIPTEN_SDK_DIR` in `build_web.bat/sh` to point to your emscripten setup.
+2. Run `build_web.bat/sh`.
+3. Web game is in the `build/web` folder.
 
-You can also build a desktop executable using `build_desktop.bat`. It will end up in the `build/desktop` folder.
+> [!NOTE]
+> `build_web.bat` is for windows, `build_web.sh` is for Linux / macOS.
+
+You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
 In some web browsers you can't test the game locally due to "CORS policy". In that case you can run a local web server using python. Go to `build/web` in a terminal and run this:
 ```
