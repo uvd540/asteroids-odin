@@ -9,7 +9,7 @@ init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
 	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
 
-	// Anything in `assets` folder is available to load
+	// Anything in `assets` folder is available to load.
 	texture = rl.LoadTexture("assets/round_cat.png")
 }
 
@@ -30,7 +30,7 @@ update :: proc() {
 
 	rl.EndDrawing()
 
-	// Anything on temp allocator is invalid after end-of-frame
+	// Anything allocated using temp allocator is invalid after this.
 	free_all(context.temp_allocator)
 }
 
