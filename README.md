@@ -17,7 +17,7 @@ Make games using Odin + Raylib that work in browser and on desktop.
 
 You can also build a desktop executable using `build_desktop.bat`. It will end up in the `build/desktop` folder.
 
-In some web browsers your game won't work due to "CORS policy", in that case you can run a local web server using python. Go to `build/web` in a terminal and run this:
+In some web browsers you can't test the game locally due to "CORS policy". In that case you can run a local web server using python. Go to `build/web` in a terminal and run this:
 ```
 python -m http.server
 ```
