@@ -1,7 +1,6 @@
 /*
 This implements some often-used procs from `core:os` but using the libc stuff
-that emscripten links in. I have based the implementations on similar procedures
-in raylib.
+that emscripten links in.
 */
 
 #+build freestanding
