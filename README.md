@@ -31,7 +31,8 @@ Go to `localhost:8000` in your browser to start the game.
 - Allocator that works with maps and SIMD.
 - Temp allocator.
 - Logger.
-- Most of `core` that doesn't do OS-specific things.
+- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package (used in `game.odin` to load a file).
+- You can load any file in the `assets` directory (it is merged into the wasm file when the emscripten compiler runs).
 
 ## What won't work
 
