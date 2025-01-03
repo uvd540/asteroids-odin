@@ -78,6 +78,10 @@ Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper i
 ## TODO:
 - Alternatives for running program that works in Chrome (annoying to have to use server...)
 
+## Web build in my Hot Reload template
+
+I have updated my Odin + Raylib + Hot Reload template with similar capabilities: https://github.com/karl-zylinski/odin-raylib-hot-reload-game-template -- Note that it's just for making a _release build_, no hot reloading is supported with the web version!
+
 ## Questions?
 
 Ask questions in my gamedev Discord: https://discord.gg/4FsHgtBmFK
