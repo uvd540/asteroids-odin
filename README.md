@@ -26,7 +26,7 @@ Make games using Odin + Raylib that works in browser and on desktop.
 > Go to `localhost:8000` to play your game.
 >
 >
-> Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python.
+> _Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python._
 
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
