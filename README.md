@@ -45,8 +45,6 @@ I recommend debugging native build when you can. But if you get web-only bugs th
 
 ## TODO:
 - Alternatives for running program that works in chrome (annoying to have to use server...)
-- Add build scripts for mac / linux
-- Load files API that works for everything
 
 ## Acknowledgements
 [Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
