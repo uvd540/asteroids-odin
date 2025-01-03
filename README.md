@@ -80,7 +80,7 @@ Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper i
 
 ## Web build in my Hot Reload template
 
-I have updated my Odin + Raylib + Hot Reload template with similar capabilities: https://github.com/karl-zylinski/odin-raylib-hot-reload-game-template -- Note that it's just for making a _release build_, no hot reloading is supported with the web version!
+I have updated my Odin + Raylib + Hot Reload template with similar capabilities: https://github.com/karl-zylinski/odin-raylib-hot-reload-game-template -- Note that it's just for making a _release web build_, no hot reloading is supported with the web version!
 
 ## Questions?
 
