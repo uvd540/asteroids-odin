@@ -37,6 +37,7 @@ I recommend debugging native build when you can. But if you get web-only bugs th
 - Alternatives for running program that works in chrome (annoying to have to use server...)
 - Organize main_web and main_desktop into directories (I think)
 - Add build scripts for mac / linux
+- Make sure zero_memory true / false on allocator actually works
 
 ## Acknowledgements
 [This repository](https://github.com/Aronicu/Raylib-WASM) helped me with:

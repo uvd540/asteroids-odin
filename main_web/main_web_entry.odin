@@ -16,15 +16,15 @@ wasm_context: runtime.Context
 // I'm not sure @thread_local works with WASM. We'll see if anyone makes a
 // multi-threaded WASM game!
 @(private="file")
-@thread_local temp_allocator: WASM_Temp_Allocator
+@thread_local temp_allocator: Default_Temp_Allocator
 
 @export
 web_init :: proc "c" () {
 	context = runtime.default_context()
-	context.allocator = web_allocator()
+	context.allocator = aligned_raylib_allocator()
 
-	wasm_temp_allocator_init(&temp_allocator, 1*mem.Megabyte)
-	context.temp_allocator = wasm_temp_allocator(&temp_allocator)
+	default_temp_allocator_init(&temp_allocator, 1*mem.Megabyte)
+	context.temp_allocator = default_temp_allocator(&temp_allocator)
 	context.logger = create_wasm_logger()
 	wasm_context = context
 
