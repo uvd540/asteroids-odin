@@ -62,7 +62,7 @@ The contents of the `main_web` folder is built in `freestanding_wasm32` build mo
 
 Odin supports compiling to a `js_wasm32` target that has less limitations. However, we cannot use that because `raylib` requires _emscripten_ in order to translate its OpenGL calls into WebGL. Emscripten has some hacks to pull in its own C standard library stuff, so that's sort-of the "OS layer" you have in emscripten: Strange libc-in-a-web-browser. The Odin core libs don't support emscripten and never will. So that's why we use `freestanding`.
 
-When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code!
+When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code! (we also feed `emcc` the prebuilt raylib and raygui wasm libs).
 
 Since our odin code is compiled using `freestanding`, no allocators or anything is set up. That's why `main_web/main_web_entry.odin` sets up an allocator, temp allocator and logger in the `web_init` proc.
 
