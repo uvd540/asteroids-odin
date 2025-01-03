@@ -40,7 +40,7 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 - Allocator that works with maps and SIMD.
 - Temp allocator.
 - Logger.
-- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package (used in `game.odin` to load a file).
+- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package. It's used in `game.odin` to load a file. The written files will disappear if you close the browser tab.
 - You can load any file in the `assets` folder.
 
 ## What won't work
