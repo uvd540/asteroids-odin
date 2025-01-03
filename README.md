@@ -23,7 +23,7 @@ python -m http.server
 ```
 Go to `localhost:8000` in your browser to start the game.
 
-> TODO: Is there a better way to avoid running a local web server?
+> Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python.
 
 ## What works
 
