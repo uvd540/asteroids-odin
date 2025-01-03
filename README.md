@@ -8,12 +8,12 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 ## Requirements
 
-- Emscripten. Download and install somewhere on your computer. Follow the instructions here: https://emscripten.org/docs/getting_started/downloads.html (the stuff under "Installation instructions using the emsdk (recommended)")
+- Emscripten. Download and install somewhere on your computer. Follow the instructions here: https://emscripten.org/docs/getting_started/downloads.html (just the stuff under "Installation instructions using the emsdk (recommended)").
 - Recent Odin compiler: This uses Raylib binding changes that were done on January 1, 2025.
 
 ## Getting started
 
-1. Change `EMSCRIPTEN_SDK_DIR` in `build_web.bat/sh` to point to your emscripten setup.
+1. Change `EMSCRIPTEN_SDK_DIR` in `build_web.bat/sh` to point to your emscripten setup. Optional if emscripten is already in your PATH.
 2. Run `build_web.bat/sh`.
 3. Web game is in the `build/web` folder.
 
