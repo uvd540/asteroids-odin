@@ -32,7 +32,6 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
-
 ## What works
 
 - raylib, raygui, rlgl using the default `vendor:raylib` bindings.
@@ -50,6 +49,10 @@ You can also build a desktop executable using `build_desktop.bat/sh`. It will en
 ## Debugging
 
 I recommend debugging the desktop build when you can (add `-debug` inside `build_desktop.bat/sh` and use for example [RAD Debugger](https://github.com/EpicGamesExt/raddebugger)). But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
+
+## Sublime Text
+
+There is a Sublime project file: `project.sublime-project`. It has a build system pre-setup that lets you run the build scripts for both web and desktop.
 
 ## TODO:
 - Alternatives for running program that works in Chrome (annoying to have to use server...)
