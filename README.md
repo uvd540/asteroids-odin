@@ -25,7 +25,7 @@ Live example: https://zylinski.se/odin-raylib-web/
 > 
 > `python -m http.server`
 >
-> Go to `localhost:8000` to play your game.
+> Open `localhost:8000` in your browser to play the game.
 >
 > _If you don't have python, then emscripten actually comes with it. Look in the `python` folder of where you installed emscripten._
 
