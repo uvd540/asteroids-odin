@@ -36,7 +36,7 @@ Go to `localhost:8000` in your browser to start the game.
 
 ## What won't work
 
-- `core:os`.
+- Anything from `core:os` that isn't in `game/os` package.
 - `fmt.print` and similar procs. Instead, use `log.info` and `log.infof`. Note: `fmt.tprintf` (temp string formatting) still works!
 
 ## Debugging
