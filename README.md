@@ -31,5 +31,7 @@ Add `-g` to  the the `emcc` line in the build script to generate debug informati
 
 ## TODO:
 - Add assets loading (you can also use #load, as game.odin shows)
+- Make allocator aligned (so map works)
+- Alternatives for running program that works in chrome (annoying to have to use server...)
 - Organize main_web and main_desktop into directories (I think)
 - Add build scripts for mac / linux
