@@ -32,6 +32,8 @@ Live example: https://zylinski.se/odin-raylib-web/
 
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
+Put any assets (textures, sounds etc) you want into the `assets` folder. It will be merged into the web build when the emscripten compiler runs. It is also copied to the `build/desktop` folder when you make a desktop build.
+
 ## What works
 
 - raylib, raygui, rlgl using the default `vendor:raylib` bindings.
@@ -39,7 +41,7 @@ You can also build a desktop executable using `build_desktop.bat/sh`. It will en
 - Temp allocator.
 - Logger.
 - There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package (used in `game.odin` to load a file).
-- You can load any file in the `assets` folder. That folder is merged into the wasm data file when the emscripten compiler runs. The assets folder is also copied to `build/desktop` when you make desktop builds.
+- You can load any file in the `assets` folder.
 
 ## What won't work
 
@@ -53,6 +55,22 @@ I recommend debugging the desktop build when you can (add `-debug` inside `build
 ## Sublime Text
 
 There is a Sublime project file: `project.sublime-project`. It has a build system pre-setup that lets you run the build scripts for both web and desktop.
+
+## How it works
+
+The contents of the `main_web` folder is built in `freestanding_wasm32` build mode. That package also imports the `game` package. So it's the whole game. `freestanding` means that no OS-specific stuff at all is included. `wasm32` means that the output is possible to run in a web browser.
+
+Odin supports compiling to a `js_wasm32` target that has less limitations. However, we cannot use that because `raylib` requires _emscripten_ in order to translate its OpenGL calls into WebGL. Emscripten has some hacks to pull in its own C standard library stuff, so that's sort-of the "OS layer" you have in emscripten: Strange libc-in-a-web-browser. The Odin core libs don't support emscripten and never will. So that's why we use `freestanding`.
+
+When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code!
+
+Since our odin code is compiled using `freestanding`, no allocators or anything is set up. That's why `main_web/main_web_entry.odin` sets up an allocator, temp allocator and logger in the `web_init` proc.
+
+The allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes.
+
+There's also a logger that uses the `puts` procedure that emscripten exposes, in order to print to the web browser console.
+
+Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `game/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
 
 ## TODO:
 - Alternatives for running program that works in Chrome (annoying to have to use server...)
