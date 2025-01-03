@@ -9,7 +9,7 @@ Make games using Odin + Raylib that work in browser and on desktop.
 - Emscripten. Download and install somewhere on your computer. https://emscripten.org/
 - Recent Odin compiler: This uses Raylib binding changes that were done on January 1, 2025.
 
-## Usage
+## Getting started
 
 1. Change `set EMSCRIPTEN_SDK_DIR=c:\emsdk` in `build_web.bat` to point to your emscripten setup.
 2. Run `build_web.bat`
@@ -17,22 +17,30 @@ Make games using Odin + Raylib that work in browser and on desktop.
 
 You can also build a desktop executable using `build_desktop.bat`. It will end up in the `build/desktop` folder.
 
-In some web browsers your game won't work due to "CORS policy", in that case you can run a local web server using python. Within `game_web`, run this:
+In some web browsers your game won't work due to "CORS policy", in that case you can run a local web server using python. Go to `build/web` in a terminal and run this:
 ```
 python -m http.server
 ```
 Go to `localhost:8000` in your browser to start the game.
 
-> TODO: Is there a better way to avoid running a local webserver?
+> TODO: Is there a better way to avoid running a local web server?
 
-## Limitations
+## What works
 
-You can't use:
-- `core:os`
-- Procedures in `core:fmt` that print to console. There's a pre-setup loger instead `core:log`, I suggest you use that, for example `log.info("message")` and `log.infof("formatted message: %v", some_string)`. Note: You can still use `fmt.tprint` to format strings.
+- raylib, raygui, rlgl
+- Allocator that works with maps and SIMD
+- Temp allocator
+- Logger
+- Most of `core` that doesn't do OS-specific things
+
+## What won't work
+
+- `core:os`.
+- `fmt.print` and similar procs. Instead, use `log.info` and `log.infof`. Note: `fmt.tprintf` (temp string formatting) still works!
 
 ## Debugging
-I recommend debugging native build when you can. But if you get web-only bugs then you can add `-g` to  the the `emcc` line in the build script to generate debug information. This will give you callstacks with useful information. It works in Chrome, but I didn't get it to work in Firefox.
+
+I recommend debugging native build when you can. But if you get web-only bugs then you can add `-g` to the the `emcc` line in the build script. This will give you crash stack traces with useful information. It works in Chrome, but I didn't get it to work in Firefox.
 
 ## TODO:
 - Alternatives for running program that works in chrome (annoying to have to use server...)
@@ -40,7 +48,7 @@ I recommend debugging native build when you can. But if you get web-only bugs th
 - Load files API that works for everything
 
 ## Acknowledgements
-[This repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
+[Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
 - The initial emscripten setup
 - The logger setup
 - The idea of using python to host a server
