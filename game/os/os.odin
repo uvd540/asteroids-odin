@@ -1,5 +1,5 @@
 /*
-An abstraction of some `core:os` stuff that also works on web. See
+An abstraction of some `core:os` stuff that work on the web with emscripten. See
 `os_web.odin` for the web implementations.
 */
 
