@@ -2,13 +2,13 @@
 
 ![image](https://github.com/user-attachments/assets/35251bc2-dfdf-4564-b2ac-9a2716e0eee7)
 
-Make games using Odin + Raylib that works in browser and on desktop.
+Make games using Odin + Raylib that works in browser and on desktop. Suitable for small games such as gamejam creations.
 
 Live example: https://zylinski.se/odin-raylib-web/
 
 ## Requirements
 
-- Emscripten. Download and install somewhere on your computer. Follow the instructions here: https://emscripten.org/docs/getting_started/downloads.html (just the stuff under "Installation instructions using the emsdk (recommended)").
+- Emscripten. Download and install somewhere on your computer. Follow the instructions here: https://emscripten.org/docs/getting_started/downloads.html (follow the stuff under "Installation instructions using the emsdk (recommended)").
 - Recent Odin compiler: This uses Raylib binding changes that were done on January 1, 2025.
 
 ## Getting started
@@ -21,14 +21,13 @@ Live example: https://zylinski.se/odin-raylib-web/
 > `build_web.bat` is for windows, `build_web.sh` is for Linux / macOS.
 
 > [!WARNING]
-> You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python:
->
+> You may not be able to start `build/web/index.html` directly, because you'll get "CORS policy" javascript errors. You can get around that by starting a local web server using python. Go into `build/web` and run:
+> 
 > `python -m http.server`
 >
-> Go to `localhost:8000` to play your game.
+> Open `localhost:8000` in your browser to play the game.
 >
->
-> _Is there a better way? I want to avoid running a local web server and avoid involving a dependency such as python._
+> _If you don't have python, then emscripten actually comes with it. Look in the `python` folder of where you installed emscripten._
 
 You can also build a desktop executable using `build_desktop.bat/sh`. It will end up in the `build/desktop` folder.
 
@@ -40,8 +39,11 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 - Allocator that works with maps and SIMD.
 - Temp allocator.
 - Logger.
-- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package (used in `game.odin` to load a file).
+- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package. It's used in `game.odin` to load a file.
 - You can load any file in the `assets` folder.
+
+> [!NOTE]
+> The files written using `write_entire_file` don't really exist outside the browser. They don't survive closing the tab. But you can write a file and load it within the same session. You can use it to make your old desktop code run, even though it won't be possible to _really_ save anything.
 
 ## What won't work
 
@@ -72,8 +74,13 @@ There's also a logger that uses the `puts` procedure that emscripten exposes, in
 
 Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `game/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
 
-## TODO:
-- Alternatives for running program that works in Chrome (annoying to have to use server...)
+## Web build in my Hot Reload template
+
+I have updated my Odin + Raylib + Hot Reload template with similar capabilities: https://github.com/karl-zylinski/odin-raylib-hot-reload-game-template -- Note that it's just for making a _release web build_, no hot reloading is supported with the web version!
+
+## Questions?
+
+Ask questions in my gamedev Discord: https://discord.gg/4FsHgtBmFK
 
 ## Acknowledgements
 [Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
