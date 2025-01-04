@@ -20,11 +20,11 @@ web_context: runtime.Context
 @export
 web_init :: proc "c" () {
 	context = runtime.default_context()
-	context.allocator = aligned_raylib_allocator()
+	context.allocator = emscripten_allocator()
 
 	default_temp_allocator_init(&temp_allocator, 1*mem.Megabyte)
 	context.temp_allocator = default_temp_allocator(&temp_allocator)
-	context.logger = create_web_logger()
+	context.logger = create_emscripten_logger()
 	web_context = context
 
 	game.init()
