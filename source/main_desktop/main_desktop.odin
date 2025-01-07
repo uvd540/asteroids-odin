@@ -1,10 +1,10 @@
 package main_desktop
 
-import game ".."
 import "core:log"
 import "core:os"
 import "core:path/filepath"
 import rl "vendor:raylib"
+import game ".."
 
 main :: proc() {
 	// Set working dir to dir of executable.
