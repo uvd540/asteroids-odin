@@ -32,7 +32,7 @@ export EMSDK_QUIET=1
 # which our Odin code is instructed to link to.
 #
 # Note that we use a separate define for raygui: -define:RAYGUI_WASM_LIB=env.o
-odin build source/main_web -target:freestanding_wasm32 -build-mode:obj -define:RAYLIB_WASM_LIB=env.o -vet -strict-style -o:speed -out:$OUT_DIR/game
+odin build source/main_web -target:freestanding_wasm32 -build-mode:obj -define:RAYLIB_WASM_LIB=env.o -define:RAYGUI_WASM_LIB=env.o -vet -strict-style -o:speed -out:$OUT_DIR/game
 
 ODIN_PATH=$(odin root)
 files="source/main_web/main_web.c $OUT_DIR/game.wasm.o ${ODIN_PATH}/vendor/raylib/wasm/libraylib.a ${ODIN_PATH}/vendor/raylib/wasm/libraygui.a"
