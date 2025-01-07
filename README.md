@@ -39,7 +39,7 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 - Allocator that works with maps and SIMD.
 - Temp allocator.
 - Logger.
-- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `game/os` package. It's used in `game.odin` to load a file.
+- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `source/os` package. It's used in `source/game.odin` to load a file.
 - You can load any file in the `assets` folder.
 
 > [!NOTE]
@@ -47,7 +47,7 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 
 ## What won't work
 
-- Anything from `core:os` that isn't in the `game/os` package.
+- Anything from `core:os` that isn't in the `source/os` package.
 - `fmt.print` and similar procs. Instead, use `log.info` and `log.infof`. Note: `fmt.tprintf` (temp string formatting) still works!
 
 ## Debugging
@@ -66,13 +66,13 @@ Odin supports compiling to a `js_wasm32` target that has less limitations. Howev
 
 When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code! (we also feed `emcc` the prebuilt raylib and raygui wasm libs).
 
-Since our odin code is compiled using `freestanding`, no allocators or anything is set up. That's why `main_web/main_web_entry.odin` sets up an allocator, temp allocator and logger in the `web_init` proc.
+Since our odin code is compiled using `freestanding`, no allocators or anything is set up. That's why `source/main_web/main_web_entry.odin` sets up an allocator, temp allocator and logger in the `web_init` proc.
 
 The allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes.
 
 There's also a logger that uses the `puts` procedure that emscripten exposes, in order to print to the web browser console.
 
-Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `game/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
+Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `source/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
 
 ## Web build in my Hot Reload template
 
