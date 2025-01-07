@@ -10,8 +10,8 @@ import "core:mem"
 import "core:c"
 import "base:intrinsics"
 
-// This create's bindings to emscriptens implementation of libc memory
-// allocation features.
+// This will create bindings to emscripten's implementation of libc
+// memory allocation features.
 @(default_calling_convention = "c")
 foreign {
 	calloc  :: proc(num, size: c.size_t) -> rawptr ---
