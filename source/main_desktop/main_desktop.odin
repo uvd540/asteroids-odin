@@ -1,6 +1,6 @@
 package main_desktop
 
-import "../game"
+import game ".."
 import "core:log"
 import "core:os"
 import "core:path/filepath"
