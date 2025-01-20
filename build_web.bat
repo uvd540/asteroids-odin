@@ -14,7 +14,7 @@
 @echo off
 
 :: Set this to point to where you installed emscripten.
-set EMSCRIPTEN_SDK_DIR=c:\emsdk
+set EMSCRIPTEN_SDK_DIR=c:\SDK\emsdk
 set OUT_DIR=build\web
 
 if not exist %OUT_DIR% mkdir %OUT_DIR%
@@ -39,7 +39,7 @@ for /f %%i in ('odin root') do set "ODIN_PATH=%%i"
 :: Tell emscripten to compile the `main_web.c` file, which is the emscripten
 :: entry point. We also link in the build Odin code, raylib and raygui
 set files=source\main_web\main_web.c %OUT_DIR%\game.wasm.o %ODIN_PATH%\vendor\raylib\wasm\libraylib.a %ODIN_PATH%\vendor\raylib\wasm\libraygui.a
-set flags=-sUSE_GLFW=3 -sASYNCIFY -sASSERTIONS -DPLATFORM_WEB --shell-file source\main_web\index_template.html --preload-file assets
+set flags=-sUSE_GLFW=3 -sASSERTIONS --shell-file source\main_web\index_template.html --preload-file assets
 
 :: add `-g` to `emcc` call to enable debug symbols (works in chrome).
 ::
