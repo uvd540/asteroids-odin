@@ -9,16 +9,13 @@
     <meta name="description" content="Make games using Odin + Raylib that work in the browser">
     <meta name="viewport" content="width=device-width">
 
-    <!-- Note: Odin favicon, change this for your own game icon -->
-    <link rel="shortcut icon" href="https://www.odin-lang.org/favicon.svg">
-
     <style>
         body { 
           margin: 0px; 
           overflow: hidden; 
           background-color: black;
         }
-        canvas.emscripten { 
+        canvas.game_canvas { 
           border: 0px none; 
           background-color: black;
           padding-left: 0;
@@ -30,7 +27,7 @@
     </style>
     </head>
     <body>
-        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+        <canvas class="game_canvas" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
         <p id="output" />
         <script type="text/javascript" src="odin.js"></script>
         <script>
@@ -46,7 +43,7 @@
                         ...imports
                     }
 
-                    return WebAssembly.instantiateStreaming(fetch('index.wasm'), newImports).then(function(output) {
+                    return WebAssembly.instantiateStreaming(fetch("index.wasm"), newImports).then(function(output) {
                         odinMemoryInterface.setExports(output.instance.exports)
                         odinMemoryInterface.setMemory(output.instance.exports.memory)
                         successCallback(output.instance);
@@ -54,7 +51,7 @@
                     });
                 },
                 print: (function() {
-                    var element = document.getElementById('output');
+                    var element = document.getElementById("output");
                     if (element) element.value = ''; // clear browser cache
                     return function(text) {
                         if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
@@ -66,8 +63,7 @@
                     };
                 })(),
                 canvas: (function() {
-                    var canvas = document.getElementById('canvas');
-                    return canvas;
+                    return document.getElementById("canvas");
                 })()
             };
         </script>

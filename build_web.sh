@@ -1,14 +1,14 @@
 #!/bin/bash -eu
 
-# This script creates a web build. It builds the game with wasm32 architecture,
-# but without any OS support (freestanding). It then uses emscripten to compile
-# a small C program that is the entry point of the web build. That C program
-# calls the Odin code.
-# 
-# Being built in freestanding mode, the Odin code has no allocator set up by
-# default. I work around this by setting up an allocator that uses the C
-# standard library that emscripten exposes. See the stuff in `source/main_web`
-# for more info.
+# Note RAYLIB_WASM_LIB=env.o -- This env.o thing is the object file that
+# contains things linked into the WASM binary. You can see how RAYLIB_WASM_LIB
+# is used inside <odin>/vendor/raylib/raylib.odin.
+#
+# We have to do it this way because the emscripten compiler (emcc) needs to be
+# fed the precompiled raylib library file. That stuff will end up in env.o,
+# which our Odin code is instructed to link to.
+#
+# Note that we use a separate define for raygui: -define:RAYGUI_WASM_LIB=env.o
 
 OUT_DIR="build/web"
 
@@ -38,6 +38,8 @@ ODIN_PATH=$(odin root)
 
 cp $ODIN_PATH/core/sys/wasm/js/odin.js $OUT_DIR
 
+# Tell emscripten to compile the `main_web.c` file, which is the emscripten
+# entry point. We also link in the build Odin code, raylib and raygui
 files="source/main_web/main_web.c $OUT_DIR/game.wasm.o ${ODIN_PATH}/vendor/raylib/wasm/libraylib.a ${ODIN_PATH}/vendor/raylib/wasm/libraygui.a"
 flags="-sUSE_GLFW=3 -sWASM_BIGINT -sWARN_ON_UNDEFINED_SYMBOLS=0 -sASSERTIONS --shell-file source/main_web/index_template.html --preload-file assets"
 

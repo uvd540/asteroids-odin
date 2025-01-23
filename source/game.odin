@@ -2,7 +2,6 @@ package game
 
 import rl "vendor:raylib"
 import "core:log"
-import "os"
 import "core:fmt"
 
 texture: rl.Texture
@@ -16,8 +15,11 @@ init :: proc() {
 	texture = rl.LoadTexture("assets/round_cat.png")
 
 	// A different way of loading a texture: using `read_entire_file` that works
-	// both on desktop and web. Note the `os` import: It's not `core:os`!
-	if long_cat_data, long_cat_ok := os.read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
+	// both on desktop and web. Note: You can import `core:os` and use
+	// `os.read_entire_file`. But that won't work on web. Emscripten has a way
+	// to bundle files into the build, and we access those using this
+	// special `read_entire_file`.
+	if long_cat_data, long_cat_ok := read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
 		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), i32(len(long_cat_data)))
 		texture2 = rl.LoadTextureFromImage(long_cat_img)
 		rl.UnloadImage(long_cat_img)
@@ -33,8 +35,8 @@ update :: proc() {
 	rl.GuiLabel({10, 10, 200, 20}, "raygui works!")
 
 	if rl.GuiButton({10, 30, 200, 20}, "Print to log (see console)") {
-		log.info("Logging works!")
-		fmt.println("With fmt too")
+		log.info("log.info works!")
+		fmt.println("fmt.println too.")
 	}
 
 	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {

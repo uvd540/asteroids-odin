@@ -1,8 +1,7 @@
 #+build !wasm32
 #+build !wasm64p32
-#+private
 
-package web_compatible_os
+package game
 
 import "core:os"
 

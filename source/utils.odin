@@ -1,9 +1,6 @@
-/*
-An abstraction of some `core:os` stuff that work on the web with emscripten. See
-`os_web.odin` for the web implementations.
-*/
+// Wraps os.read_entire_file and os.write_entire_file, but they also work with emscripten.
 
-package web_compatible_os
+package game
 
 @(require_results)
 read_entire_file :: proc(name: string, allocator := context.allocator, loc := #caller_location) -> (data: []byte, success: bool) {
