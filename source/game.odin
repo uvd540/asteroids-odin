@@ -3,6 +3,7 @@ package game
 import rl "vendor:raylib"
 import "core:log"
 import "os"
+import "core:fmt"
 
 texture: rl.Texture
 texture2: rl.Texture
@@ -33,6 +34,7 @@ update :: proc() {
 
 	if rl.GuiButton({10, 30, 200, 20}, "Print to log (see console)") {
 		log.info("Logging works!")
+		fmt.println("With fmt too")
 	}
 
 	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {
