@@ -2,13 +2,13 @@
 
 ![image](https://github.com/user-attachments/assets/35251bc2-dfdf-4564-b2ac-9a2716e0eee7)
 
-Make games using Odin + Raylib that works in browser and on desktop. Suitable for small games such as gamejam creations.
+Make games using Odin + Raylib that works in browser and on desktop.
 
 Live example: https://zylinski.se/odin-raylib-web/
 
 ## Requirements
 
-- Emscripten. Download and install somewhere on your computer. Follow the instructions here: https://emscripten.org/docs/getting_started/downloads.html (follow the stuff under "Installation instructions using the emsdk (recommended)").
+- Emscripten. Follow instructions here: https://emscripten.org/docs/getting_started/downloads.html (the stuff under "Installation instructions using the emsdk (recommended)").
 - Recent Odin compiler: This uses Raylib binding changes that were done on January 1, 2025.
 
 ## Getting started
@@ -35,20 +35,15 @@ Put any assets (textures, sounds etc) you want into the `assets` folder. It will
 
 ## What works
 
-- raylib, raygui, rlgl using the default `vendor:raylib` bindings.
-- Allocator that works with maps and SIMD.
+- Use raylib, raygui, rlgl using the default `vendor:raylib` bindings.
+- Allocator that works with maps and SIMD (uses emcripten's `malloc`).
 - Temp allocator.
 - Logger.
-- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that works on web as well. See `source/os` package. It's used in `source/game.odin` to load a file.
-- You can load any file in the `assets` folder.
+- fmt.println etc
+- There's a wrapper for `read_entire_file` and `write_entire_file` from `core:os` that can files from `assets` directory, even on web. See `souce/utils.odin`
 
 > [!NOTE]
 > The files written using `write_entire_file` don't really exist outside the browser. They don't survive closing the tab. But you can write a file and load it within the same session. You can use it to make your old desktop code run, even though it won't be possible to _really_ save anything.
-
-## What won't work
-
-- Anything from `core:os` that isn't in the `source/os` package.
-- `fmt.print` and similar procs. Instead, use `log.info` and `log.infof`. Note: `fmt.tprintf` (temp string formatting) still works!
 
 ## Debugging
 
@@ -60,19 +55,11 @@ There is a Sublime project file: `project.sublime-project`. It has a build syste
 
 ## How it works
 
-The contents of the `main_web` folder is built in `freestanding_wasm32` build mode. That package also imports the `game` package. So it's the whole game. `freestanding` means that no OS-specific stuff at all is included. `wasm32` means that the output is possible to run in a web browser.
+The contents of the `main_web` folder is built in `js_wasm32` build mode. That package also imports the `game` package. So it's the whole game. `js` is a special target that uses `<odin>/core/sys/wasm/js/odin.js` to talk to the browser. `wasm32` means that the code itself is possible to run in a web browser.
 
-Odin supports compiling to a `js_wasm32` target that has less limitations. However, we cannot use that because `raylib` requires _emscripten_ in order to translate its OpenGL calls into WebGL. Emscripten has some hacks to pull in its own C standard library stuff, so that's sort-of the "OS layer" you have in emscripten: Strange libc-in-a-web-browser. The Odin core libs don't support emscripten and never will. So that's why we use `freestanding`.
+When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code! We also feed `emcc` the prebuilt raylib and raygui wasm libs.
 
-When `main_web` has been compiled into an object file called `game.wasm.o`, then the emscripten compiler `emcc` is run. It is fed both the `game.wasm.o` file and also compiles the `main_web/main_web.c` file. That C file says what will happen when our game is run in a web browser: It'll call our Odin code! (we also feed `emcc` the prebuilt raylib and raygui wasm libs).
-
-Since our odin code is compiled using `freestanding`, no allocators or anything is set up. That's why `source/main_web/main_web_entry.odin` sets up an allocator, temp allocator and logger in the `web_init` proc.
-
-The allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes.
-
-There's also a logger that uses the `puts` procedure that emscripten exposes, in order to print to the web browser console.
-
-Like I said, we can't use `core:os` at all. Therefore I've made a tiny wrapper in `source/os` that implements `read_entire_file` and `write_entire_file` that both work in web and desktop mode. The web mode once again uses emscripten things to read from the data that is baked into the built web app (the stuff in the `assets` folder). The desktop mode just runs the normal `core:os` code.
+The default WASM allocator doesn't play nicely with emscripten, so I've added an `emscripten_allocator`. That allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes. It is set up in `web_init` of `source/main_web/main_web_entry.odin`
 
 ## Web build in my Hot Reload template
 
