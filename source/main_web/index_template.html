@@ -34,6 +34,7 @@
 		odinMemoryInterface.setIntSize(4);
 		var odinImports = odin.setupDefaultImports(odinMemoryInterface);
 
+		// The Module is used as configuration for emscripten.
 		var Module = {
 			// This is called by emscripten when it starts up.
 			instantiateWasm: (imports, successCallback) => {
@@ -69,6 +70,7 @@
 					// race condition. `canvas` doesn't have it's correct size yet.
 					send_resize()
 
+					// Runs the "main loop".
 					function do_main_update() {
 						if (!e.main_update()) {
 							e.main_end()
