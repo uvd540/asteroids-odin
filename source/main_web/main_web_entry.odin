@@ -11,7 +11,7 @@ import game ".."
 web_context: runtime.Context
 
 @export
-web_init :: proc "c" () {
+main_start :: proc "c" () {
 	context = runtime.default_context()
 
 	// The WASM allocator doesn't seem to work properly in combination with
@@ -31,9 +31,16 @@ web_init :: proc "c" () {
 }
 
 @export
-web_update :: proc "c" () {
+main_update :: proc "c" () -> bool {
 	context = web_context
 	game.update()
+	return game.should_run()
+}
+
+@export
+main_end :: proc "c" () {
+	context = web_context
+	game.shutdown()
 }
 
 @export

@@ -54,11 +54,13 @@ There is a Sublime project file: `project.sublime-project`. It has a build syste
 
 ## How the web build works
 
-The contents of the `source/main_web` folder is built using the `js_wasm32` target. That package also imports the `source` package (which contains the actually game code). `js` is a special target that uses `<odin>/core/sys/wasm/js/odin.js` to talk to the browser. `wasm32` means 32 bit Web Assembly, it makes the compilation result runnable in a web browser.
+1. The contents of the `source/main_web` folder is built using the `js_wasm32` target. That package also imports the `source` package (which contains the actually game code). `js` is a special target that uses `<odin>/core/sys/wasm/js/odin.js` to talk to the browser. `wasm32` means 32 bit Web Assembly, it makes the compilation result runnable in a web browser. The result of the compilation of `source/main_web` is an object file called `game.wasm.o`.
 
-`main_web` is compiled into an object file called `game.wasm.o`. The emscripten compiler `emcc` is run and fed the `game.wasm.o` file. It also compiles the `main_web/main_web.c` file. That C file mostly hands control over to our Odin code. It calls the procedures in `source/main_web/main_web_entry.odin`. `main_web.c` also tells emscripten to run `web_update` each "frame". We also feed `emcc` the raylib and raygui WASM libs.
+2. The emscripten compiler `emcc` is run and fed the `game.wasm.o` file. We also feed `emcc` the raylib and raygui WASM libs. `emcc` will (among other things) translate some OpenGL stuff in raylib that makes it possible to run on web. Finally, `emcc` is also fed `source/main_web/index_template.html`. The result of `emcc` is two files: `build/web/index.wasm` and `build/web/index.html`.
 
-Odin comes with a WASM allocator. But it doesn't play nicely with emscripten, so I've added an `emscripten_allocator`. That allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes. It is set up in `web_init` of `source/main_web/main_web_entry.odin`
+The resulting `build/web/index.html` contains javascript that starts up the emscripten runtime environment. It also loads `odin.js`: That's the javascript environment for programs using the `js` Odin target. It will load `index.wasm` and call `web_init` from `source/main_web/main_web.odin`. Using a `requestAnimationFrame` "loop" it will also continuously run `web_update`, also from `main_web.odin`.
+
+Odin comes with a WASM allocator. But it doesn't play nicely with emscripten, so I've added an `emscripten_allocator`. That allocator uses the libc procedures `malloc`, `calloc`, `free` and `realloc` that emscripten exposes. It is set up in `web_init` of `source/main_web/main_web.odin`
 
 ## Web build in my Hot Reload template
 

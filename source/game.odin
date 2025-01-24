@@ -5,10 +5,13 @@ import "core:log"
 import "core:fmt"
 import "core:c"
 
+run: bool
 texture: rl.Texture
 texture2: rl.Texture
+texture2_rot: f32
 
 init :: proc() {
+	run = true
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
 	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
 
@@ -30,9 +33,20 @@ init :: proc() {
 update :: proc() {
 	rl.BeginDrawing()
 	rl.ClearBackground({0, 120, 153, 255})
-	rl.DrawTextureEx(texture2, {270, 90}, 43, 5, rl.WHITE)
+	{
+		texture2_rot += rl.GetFrameTime()*50
+		source_rect := rl.Rectangle {
+			0, 0,
+			f32(texture2.width), f32(texture2.height),
+		}
+		dest_rect := rl.Rectangle {
+			300, 220,
+			f32(texture2.width)*5, f32(texture2.height)*5,
+		}
+		rl.DrawTexturePro(texture2, source_rect, dest_rect, {dest_rect.width/2, dest_rect.height/2}, texture2_rot, rl.WHITE)
+	}
 	rl.DrawTextureEx(texture, rl.GetMousePosition(), 0, 5, rl.WHITE)
-	rl.DrawRectangleRec({0, 0, 250, 100}, rl.BLACK)
+	rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
 	rl.GuiLabel({10, 10, 200, 20}, "raygui works!")
 
 	if rl.GuiButton({10, 30, 200, 20}, "Print to log (see console)") {
@@ -42,6 +56,10 @@ update :: proc() {
 
 	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {
 		rl.OpenURL("https://github.com/karl-zylinski/odin-raylib-web")
+	}
+
+	if rl.GuiButton({10, 90, 200, 20}, "Quit") {
+		run = false
 	}
 
 	rl.EndDrawing()
@@ -58,4 +76,15 @@ parent_window_size_changed :: proc(w, h: int) {
 
 shutdown :: proc() {
 	rl.CloseWindow()
+}
+
+should_run :: proc() -> bool {
+	when ODIN_OS != .JS {
+		// Never run this proc in browser. It contains a 16 ms sleep on web!
+		if rl.WindowShouldClose() {
+			run = false
+		}
+	}
+
+	return run
 }
