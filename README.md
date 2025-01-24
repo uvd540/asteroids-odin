@@ -1,6 +1,5 @@
 # Odin + Raylib on the web
-
-![image](https://github.com/user-attachments/assets/bf7af964-ff99-4658-b764-d953a3230a28)
+![image](https://github.com/user-attachments/assets/a104c6f4-8789-415d-a9af-c8ff2e9458ec)
 
 Make games using Odin + Raylib that works in browser and on desktop.
 
