@@ -16,7 +16,7 @@ main :: proc() {
 	
 	game.init()
 
-	for !rl.WindowShouldClose() {
+	for game.should_run() {
 		game.update()
 	}
 
