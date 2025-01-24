@@ -1,6 +1,4 @@
-/*
-These procs are the ones that will be called from `main_wasm.c`.
-*/
+// These procs are the ones that will be called from `main_wasm.c`.
 
 package main_web
 
