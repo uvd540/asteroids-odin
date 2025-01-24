@@ -1,4 +1,5 @@
-// These procs are the ones that will be called from `main_wasm.c`.
+// These procs are the ones that will be called from `index.html`, which is
+// generated from `index_template.html`.
 
 package main_web
 
