@@ -3,6 +3,7 @@ package game
 import rl "vendor:raylib"
 import "core:log"
 import "core:fmt"
+import "core:c"
 
 texture: rl.Texture
 texture2: rl.Texture
@@ -20,7 +21,7 @@ init :: proc() {
 	// to bundle files into the build, and we access those using this
 	// special `read_entire_file`.
 	if long_cat_data, long_cat_ok := read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
-		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), i32(len(long_cat_data)))
+		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), c.int(len(long_cat_data)))
 		texture2 = rl.LoadTextureFromImage(long_cat_img)
 		rl.UnloadImage(long_cat_img)
 	}
@@ -52,7 +53,7 @@ update :: proc() {
 // In a web build, this is called when browser changes size. Remove the
 // `rl.SetWindowSize` call if you don't want a resizable game.
 parent_window_size_changed :: proc(w, h: int) {
-	rl.SetWindowSize(i32(w), i32(h))
+	rl.SetWindowSize(c.int(w), c.int(h))
 }
 
 shutdown :: proc() {

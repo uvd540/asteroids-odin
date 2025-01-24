@@ -11,24 +11,23 @@
 
     <style>
         body { 
-          margin: 0px; 
-          overflow: hidden; 
-          background-color: black;
+            margin: 0px; 
+            overflow: hidden; 
+            background-color: black;
         }
         canvas.game_canvas { 
-          border: 0px none; 
-          background-color: black;
-          padding-left: 0;
-          padding-right: 0;
-          margin-left: auto;
-          margin-right: auto;
-          display: block;
+            border: 0px none; 
+            background-color: black;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
     </style>
     </head>
     <body>
         <canvas class="game_canvas" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
-        <p id="output" />
         <script type="text/javascript" src="odin.js"></script>
         <script>
             var odinMemoryInterface = new odin.WasmMemoryInterface();
@@ -44,9 +43,38 @@
                     }
 
                     return WebAssembly.instantiateStreaming(fetch("index.wasm"), newImports).then(function(output) {
-                        odinMemoryInterface.setExports(output.instance.exports)
-                        odinMemoryInterface.setMemory(output.instance.exports.memory)
+                        var e = output.instance.exports
+                        odinMemoryInterface.setExports(e)
+                        odinMemoryInterface.setMemory(e.memory)
                         successCallback(output.instance);
+
+                        // Calls any procedure marked with @init
+                        e._start()
+
+                        e.web_init()
+
+                        function send_resize() {
+                            var canvas = document.getElementById('canvas');
+                            e.web_window_size_changed(canvas.width, canvas.height)
+                        }
+
+                        window.addEventListener('resize', function(event) {
+                            send_resize()
+                        }, true);
+
+                        send_resize()
+
+                        if (e.web_update) {
+                            function step(currTimeStamp) {
+                                e.web_update()
+                                window.requestAnimationFrame(step);
+                            }
+
+                            window.requestAnimationFrame(step);
+                        } else {
+                            e._end();
+                        }
+
                         return output.instance.exports;
                     });
                 },
@@ -67,6 +95,8 @@
                 })()
             };
         </script>
+
+        <!-- Emscripten injects its javascript here -->
         {{{ SCRIPT }}}
     </body>
 </html>
