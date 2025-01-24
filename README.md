@@ -1,6 +1,5 @@
 # Odin + Raylib on the web
-
-![image](https://github.com/user-attachments/assets/35251bc2-dfdf-4564-b2ac-9a2716e0eee7)
+![image](https://github.com/user-attachments/assets/a104c6f4-8789-415d-a9af-c8ff2e9458ec)
 
 Make games using Odin + Raylib that works in browser and on desktop.
 
@@ -65,6 +64,8 @@ Start by looking at `build_web.bat/sh` and see how it uses both the Odin compile
 Talk to me on my Discord server: https://discord.gg/4FsHgtBmFK
 
 ## Acknowledgements
+Tyzor on the Odin Discord helped me with using `js_wasm32` instead of `freestanding_wasm32`.
+
 [Caedo's repository](https://github.com/Caedo/raylib_wasm_odin) and [Aronicu's repository](https://github.com/Aronicu/Raylib-WASM) helped me with:
 - The initial emscripten setup
 - The logger setup
