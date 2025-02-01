@@ -3,7 +3,6 @@ package main_desktop
 import "core:log"
 import "core:os"
 import "core:path/filepath"
-import rl "vendor:raylib"
 import game ".."
 
 main :: proc() {
