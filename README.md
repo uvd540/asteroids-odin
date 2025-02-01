@@ -59,7 +59,7 @@ My Odin + Raylib + Hot Reload template has been updated with similar capabilitie
 
 Start by looking at `build_web.bat/sh` and see how it uses both the Odin compiler and the emscripten compiler (`emcc`). Raylib requires `emcc` to (among other things) translate OpenGL to WebGL calls. Also see `source/main_web/index_template.html` (used as template for `build/web/index/html`). That HTML file contains javascript that calls the entry-point procedures you'll find in `source/main_web/main_web.odin`. It's a bit special in the way that it sets our Odin stuff up within a callback that comes from emscripten (`instantiateWasm`).
 
-## Frequently asked questions
+## Frequent Issues
 
 ### I get `panic: wasm_allocator: initial memory could not be allocated`
 
