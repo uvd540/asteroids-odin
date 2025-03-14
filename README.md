@@ -62,11 +62,35 @@ My Odin + Raylib + Hot Reload template has been updated with similar capabilitie
 
 Start by looking at `build_web.bat/sh` and see how it uses both the Odin compiler and the emscripten compiler (`emcc`). Raylib requires `emcc` to (among other things) translate OpenGL to WebGL calls. Also see `source/main_web/index_template.html` (used as template for `build/web/index/html`). That HTML file contains javascript that calls the entry-point procedures you'll find in `source/main_web/main_web.odin`. It's a bit special in the way that it sets our Odin stuff up within a callback that comes from emscripten (`instantiateWasm`).
 
-## Frequent Issues
+## Troubleshooting
 
 ### I get `panic: wasm_allocator: initial memory could not be allocated`
 
-You probably have a global variable that allocates dynamic memory. Move that allocation into the game's `init` proc. The default context doesn't have the correct allocator set.
+You probably have a global variable that allocates dynamic memory. Move that allocation into the game's `init` proc. This could also happen if initialize dynamic arrays or maps in the global file scope, like so:
+
+```
+arr := [dynamic]int { 2, 3, 4 }
+```
+
+In that case you can declare it and do the initialization in the `init` proc instead:
+
+```
+arr: [dynamic]int
+
+init :: proc() {
+  arr = { 2, 3, 4 }
+}
+```
+
+This happens because the context hasn't been initialized with the correct allocator yet.
+
+### I get `RuntimeError: memory access out of bounds`
+
+Try modifying the `build_web` script and add these flags where it runs `emcc`:
+```
+-sALLOW_MEMORY_GROWTH=1 -sINITIAL_HEAP=16777216 -sSTACK_SIZE=65536
+```
+The numbers above are the default values, try bigger ones and see if it helps.
 
 ### Error: `emcc: error: build\web\index.data --from-emcc --preload assets' failed (returned 1)`
 You might be missing the `assets` folder. It must have at least a single file inside it. You can also remove the `--preload assets` from the build script.
