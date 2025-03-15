@@ -84,16 +84,46 @@ init :: proc() {
 
 This happens because the context hasn't been initialized with the correct allocator yet.
 
+The error can also happen if you import some package that does allocations in a procedure tagged with `@(init)`. Once such page is `core:math/big`. That package is in turn imported by `core:encoding/cbor`. So if you import cbor you may get this error. If you need cbor, then you you can try, as a work-around, to run the Odin compiler with the `-default-to-nil-allocator` option. That may break the `core:math/big` package, but you might not need it.
+
 ### I get `RuntimeError: memory access out of bounds`
 
 Try modifying the `build_web` script and add these flags where it runs `emcc`:
 ```
 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_HEAP=16777216 -sSTACK_SIZE=65536
 ```
-The numbers above are the default values, try bigger ones and see if it helps.
+The numbers `16777216` and `65536` above are the default values, try bigger ones and see if it helps.
+
+### I load assets from more folders than the `assets` folder
+Add an additional `--preload-file folder_name` option to the build script when it runs `emcc`. Then that folder will become part of the web build.
+
+### I can only use `#version 100` shaders
+The raylbi that comes with Odin can only use version 100. But you can recompile raylib so that shaders with version `330 es` works. That's a fairly modern version.
+
+You'll need to recompile the raylib WASM binaries. That means you need to download the raylib source.
+
+When you've downloaded it you need to compile raylib with OpenGL ES3 support. Something like this:
+
+```
+make clean
+make PLATFORM=PLATFORM_WEB GRAPHICS=GRAPHICS_API_OPENGL_ES3 -B
+```
+You might also be able to use `mingw32-make` instead of `make` on Windows. Or just invoke `emcc` manually and compile raylib like so.
+
+You'll need to copy the outputted wasm libs from this build to your raylib bindings, overwriting the old Raylib WASM library files.
+
+Finally, when building your game, you need to modify the build script. When it runs `emcc`, add the following: `-sFULL_ES3=1`.
+
+You can now use the `300 es` version of shaders. Make sure the shaders have this at the top:
+```
+#version 300 es
+precision highp float;
+```
+
+Thanks to lucy for figuring this stuff out.
 
 ### Error: `emcc: error: build\web\index.data --from-emcc --preload assets' failed (returned 1)`
-You might be missing the `assets` folder. It must have at least a single file inside it. You can also remove the `--preload assets` from the build script.
+You might be missing the `assets` folder. It must have at least a single file inside it. You can also remove the `--preload-file assets` from the build script.
 
 ## Questions?
 
