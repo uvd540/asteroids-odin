@@ -98,9 +98,9 @@ The numbers `16777216` and `65536` above are the default values, try bigger ones
 Add an additional `--preload-file folder_name` option to the build script when it runs `emcc`. Then that folder will become part of the web build.
 
 ### I can only use `#version 100` shaders
-The raylbi that comes with Odin can only use version 100. But you can recompile raylib so that shaders with version `330 es` works. That's a fairly modern version.
+The raylib libraries that come with Odin can only use version 100. That's the default for raylib. But you can recompile raylib so that shaders with version `300 es` works. That's a fairly modern version. It's mostly the same as the common `330` version.
 
-You'll need to recompile the raylib WASM binaries. That means you need to download the raylib source.
+You'll need to recompile the raylib WASM binaries. That means you need to download the raylib source from here: https://github.com/raysan5/raylib
 
 When you've downloaded it you need to compile raylib with OpenGL ES3 support. Something like this:
 
@@ -108,11 +108,11 @@ When you've downloaded it you need to compile raylib with OpenGL ES3 support. So
 make clean
 make PLATFORM=PLATFORM_WEB GRAPHICS=GRAPHICS_API_OPENGL_ES3 -B
 ```
-You might also be able to use `mingw32-make` instead of `make` on Windows. Or just invoke `emcc` manually and compile raylib like so.
+You might also be able to use `mingw32-make` instead of `make` on Windows, if you have mingw installed. You may also be able to invoke `emcc` manually, but you'll have to look through the makefiles to see what commands you need to run.
 
-You'll need to copy the outputted wasm libs from this build to your raylib bindings, overwriting the old Raylib WASM library files.
+You'll need to copy the outputted wasm libs from this build to your raylib bindings, overwriting the old raylib WASM library files.
 
-Finally, when building your game, you need to modify the build script. When it runs `emcc`, add the following: `-sFULL_ES3=1`.
+When building your game, you need to modify the build script. When it runs `emcc`, add the following: `-sFULL_ES3=1`.
 
 You can now use the `300 es` version of shaders. Make sure the shaders have this at the top:
 ```
