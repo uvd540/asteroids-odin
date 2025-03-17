@@ -5,9 +5,6 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 Live example: https://zylinski.se/odin-raylib-web/
 
-> [!WARNING]
-> There's a bug in Odin right now that breaks the web build. As a temporary workaround, change `game.wasm.o` to `gamegame.wasm.o` in the build script.
-
 ## Requirements
 
 - **Emscripten**. Follow instructions here: https://emscripten.org/docs/getting_started/downloads.html (the stuff under "Installation instructions using the emsdk (recommended)").
