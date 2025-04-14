@@ -5,9 +5,6 @@ Make games using Odin + Raylib that works in browser and on desktop.
 
 Live example: https://zylinski.se/odin-raylib-web/
 
-> [!WARNING]
-> There's a bug in Odin right now that breaks the web build. As a temporary workaround, change `game.wasm.o` to `gamegame.wasm.o` in the build script.
-
 ## Requirements
 
 - **Emscripten**. Follow instructions here: https://emscripten.org/docs/getting_started/downloads.html (the stuff under "Installation instructions using the emsdk (recommended)").
@@ -62,14 +59,68 @@ My Odin + Raylib + Hot Reload template has been updated with similar capabilitie
 
 Start by looking at `build_web.bat/sh` and see how it uses both the Odin compiler and the emscripten compiler (`emcc`). Raylib requires `emcc` to (among other things) translate OpenGL to WebGL calls. Also see `source/main_web/index_template.html` (used as template for `build/web/index/html`). That HTML file contains javascript that calls the entry-point procedures you'll find in `source/main_web/main_web.odin`. It's a bit special in the way that it sets our Odin stuff up within a callback that comes from emscripten (`instantiateWasm`).
 
-## Frequent Issues
+## Troubleshooting
 
 ### I get `panic: wasm_allocator: initial memory could not be allocated`
 
-You probably have a global variable that allocates dynamic memory. Move that allocation into the game's `init` proc. The default context doesn't have the correct allocator set.
+You probably have a global variable that allocates dynamic memory. Move that allocation into the game's `init` proc. This could also happen if initialize dynamic arrays or maps in the global file scope, like so:
+
+```
+arr := [dynamic]int { 2, 3, 4 }
+```
+
+In that case you can declare it and do the initialization in the `init` proc instead:
+
+```
+arr: [dynamic]int
+
+init :: proc() {
+  arr = { 2, 3, 4 }
+}
+```
+
+This happens because the context hasn't been initialized with the correct allocator yet.
+
+The error can also happen if you import some package that does allocations in a procedure tagged with `@(init)`. Once such page is `core:math/big`. That package is in turn imported by `core:encoding/cbor`. So if you import cbor you may get this error. If you need cbor, then you you can try, as a work-around, to run the Odin compiler with the `-default-to-nil-allocator` option. That may break the `core:math/big` package, but you might not need it.
+
+### I get `RuntimeError: memory access out of bounds`
+
+Try modifying the `build_web` script and add these flags where it runs `emcc`:
+```
+-sALLOW_MEMORY_GROWTH=1 -sINITIAL_HEAP=16777216 -sSTACK_SIZE=65536
+```
+The numbers `16777216` and `65536` above are the default values, try bigger ones and see if it helps.
+
+### I load assets from more folders than the `assets` folder
+Add an additional `--preload-file folder_name` option to the build script when it runs `emcc`. Then that folder will become part of the web build.
+
+### I can only use `#version 100` shaders
+The raylib libraries that come with Odin can only use version 100. That's the default for raylib. But you can recompile raylib so that shaders with version `300 es` works. That's a fairly modern version. It's mostly the same as the common `330` version.
+
+You'll need to recompile the raylib WASM binaries. That means you need to download the raylib source from here: https://github.com/raysan5/raylib
+
+When you've downloaded it you need to compile raylib with OpenGL ES3 support. Something like this:
+
+```
+make clean
+make PLATFORM=PLATFORM_WEB GRAPHICS=GRAPHICS_API_OPENGL_ES3 -B
+```
+You might also be able to use `mingw32-make` instead of `make` on Windows, if you have mingw installed. You may also be able to invoke `emcc` manually, but you'll have to look through the makefiles to see what commands you need to run.
+
+You'll need to copy the outputted wasm libs from this build to your raylib bindings, overwriting the old raylib WASM library files.
+
+When building your game, you need to modify the build script. When it runs `emcc`, add the following: `-sFULL_ES3=1`.
+
+You can now use the `300 es` version of shaders. Make sure the shaders have this at the top:
+```
+#version 300 es
+precision highp float;
+```
+
+Thanks to lucy for figuring this stuff out.
 
 ### Error: `emcc: error: build\web\index.data --from-emcc --preload assets' failed (returned 1)`
-You might be missing the `assets` folder. It must have at least a single file inside it. You can also remove the `--preload assets` from the build script.
+You might be missing the `assets` folder. It must have at least a single file inside it. You can also remove the `--preload-file assets` from the build script.
 
 ## Questions?
 
