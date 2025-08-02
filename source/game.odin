@@ -1,67 +1,132 @@
 package game
 
-import rl "vendor:raylib"
-import "core:log"
-import "core:fmt"
 import "core:c"
+import "core:fmt"
+import "core:log"
+import rl "vendor:raylib"
 
 run: bool
-texture: rl.Texture
-texture2: rl.Texture
-texture2_rot: f32
+
+inputs: Inputs
+ship: Ship
+projectiles: [dynamic]Projectile
+
+DEBUG_MODE :: false
+
+Inputs :: struct {
+	accelerate: bool,
+	turn_left:  bool,
+	turn_right: bool,
+	fire:       bool,
+}
+
+inputs_update :: proc(inputs: ^Inputs) {
+	inputs^ = Inputs{}
+	inputs.accelerate = rl.IsKeyDown(.UP)
+	inputs.turn_left = rl.IsKeyDown(.LEFT)
+	inputs.turn_right = rl.IsKeyDown(.RIGHT)
+	inputs.fire = rl.IsKeyDown(.SPACE)
+}
+
+Ship :: struct {
+	position:     [2]f32,
+	velocity:     [2]f32,
+	heading:      f32,
+	max_speed:    f32,
+	acceleration: f32,
+	deceleration: f32,
+	size:         f32,
+	turn_speed:   f32,
+}
+
+ship_init :: proc(ship: ^Ship) {
+	ship.position = {400, 400}
+	ship.size = 15
+	ship.acceleration = 500
+	ship.deceleration = 100
+	ship.turn_speed = 2 * rl.PI
+	ship.max_speed = 500
+}
+
+ship_update :: proc(ship: ^Ship, inputs: Inputs, dt: f32) {
+	if inputs.turn_left {
+		ship.heading -= ship.turn_speed * dt
+	}
+	if inputs.turn_right {
+		ship.heading += ship.turn_speed * dt
+	}
+	if inputs.accelerate {
+		ship.velocity += rl.Vector2Rotate({ship.acceleration * dt, 0}, ship.heading)
+	}
+	ship.velocity = rl.Vector2MoveTowards(ship.velocity, {0, 0}, ship.deceleration * dt)
+	ship.velocity = rl.Vector2ClampValue(ship.velocity, 0, ship.max_speed)
+	ship.position += ship.velocity * dt
+	wrap(&ship.position, {0, 0}, {800, 800})
+}
+
+ship_draw :: proc(ship: Ship) {
+	pt0 := rl.Vector2Rotate({ship.size, 0}, ship.heading)
+	pt1 := rl.Vector2Rotate(pt0, 2 * rl.PI / 3)
+	pt2 := rl.Vector2Rotate(pt1, 2 * rl.PI / 3)
+	rl.DrawLineEx(pt0 + ship.position, pt1 + ship.position, 2, rl.WHITE)
+	rl.DrawLineEx(pt0 + ship.position, pt2 + ship.position, 2, rl.WHITE)
+	rl.DrawLineEx((pt1 * 0.5) + ship.position, (pt2 * 0.5) + ship.position, 2, rl.WHITE)
+	if (DEBUG_MODE) {
+		rl.DrawCircleLinesV(ship.position, ship.size, rl.RED)
+	}
+}
+
+projectile_speed :: 500
+Projectile :: struct {
+	position:     [2]f32,
+	velocity:     [2]f32,
+	time_to_live: f32,
+}
+
+projectile_spawn :: proc(projectiles: ^[dynamic]Projectile, position: [2]f32, heading: f32) {
+	p := Projectile {
+		position     = position,
+		velocity     = rl.Vector2Rotate({projectile_speed, 0}, heading),
+		time_to_live = 1,
+	}
+	append(projectiles, p)
+}
+
+projectiles_update :: proc(projectiles: ^[dynamic]Projectile, dt: f32) {
+	for i := 0; i < len(projectiles); i += 1 {
+		projectiles[i].time_to_live -= dt
+		if projectiles[i].time_to_live <= 0 {
+			unordered_remove(projectiles, i)
+			i -= 1
+		}
+	}
+}
+
+projectiles_draw :: proc(projectiles: []Projectile) {
+	for projectile in projectiles {
+		rl.DrawCircleV(projectile.position, 4, rl.WHITE)
+	}
+}
 
 init :: proc() {
 	run = true
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
-	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
-
-	// Anything in `assets` folder is available to load.
-	texture = rl.LoadTexture("assets/round_cat.png")
-
-	// A different way of loading a texture: using `read_entire_file` that works
-	// both on desktop and web. Note: You can import `core:os` and use
-	// `os.read_entire_file`. But that won't work on web. Emscripten has a way
-	// to bundle files into the build, and we access those using this
-	// special `read_entire_file`.
-	if long_cat_data, long_cat_ok := read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
-		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), c.int(len(long_cat_data)))
-		texture2 = rl.LoadTextureFromImage(long_cat_img)
-		rl.UnloadImage(long_cat_img)
-	}
+	rl.InitWindow(800, 800, "asteroids")
+	ship_init(&ship)
 }
 
 update :: proc() {
+	dt := rl.GetFrameTime()
+	inputs_update(&inputs)
+	ship_update(&ship, inputs, dt)
+	if inputs.fire {
+		projectile_spawn(&projectiles, ship.position, ship.heading)
+	}
+	projectiles_update(&projectiles, dt)
 	rl.BeginDrawing()
-	rl.ClearBackground({0, 120, 153, 255})
-	{
-		texture2_rot += rl.GetFrameTime()*50
-		source_rect := rl.Rectangle {
-			0, 0,
-			f32(texture2.width), f32(texture2.height),
-		}
-		dest_rect := rl.Rectangle {
-			300, 220,
-			f32(texture2.width)*5, f32(texture2.height)*5,
-		}
-		rl.DrawTexturePro(texture2, source_rect, dest_rect, {dest_rect.width/2, dest_rect.height/2}, texture2_rot, rl.WHITE)
-	}
-	rl.DrawTextureEx(texture, rl.GetMousePosition(), 0, 5, rl.WHITE)
-	rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
-	rl.GuiLabel({10, 10, 200, 20}, "raygui works!")
-
-	if rl.GuiButton({10, 30, 200, 20}, "Print to log (see console)") {
-		log.info("log.info works!")
-		fmt.println("fmt.println too.")
-	}
-
-	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {
-		rl.OpenURL("https://github.com/karl-zylinski/odin-raylib-web")
-	}
-
-	if rl.GuiButton({10, 90, 200, 20}, "Quit") {
-		run = false
-	}
-
+	rl.ClearBackground(rl.BLACK)
+	ship_draw(ship)
+	projectiles_draw(projectiles[:])
 	rl.EndDrawing()
 
 	// Anything allocated using temp allocator is invalid after this.
@@ -88,3 +153,19 @@ should_run :: proc() -> bool {
 
 	return run
 }
+
+wrap :: proc(position: ^[2]f32, min: [2]f32, max: [2]f32) {
+	if position.x < min.x {
+		position.x = max.x
+	}
+	if position.x > max.x {
+		position.x = min.x
+	}
+	if position.y < min.y {
+		position.y = max.y
+	}
+	if position.y > max.y {
+		position.y = min.y
+	}
+}
+
