@@ -98,7 +98,10 @@ projectiles_update :: proc(projectiles: ^[dynamic]Projectile, dt: f32) {
 		if projectiles[i].time_to_live <= 0 {
 			unordered_remove(projectiles, i)
 			i -= 1
+			continue
 		}
+		projectiles[i].position += projectiles[i].velocity * dt
+		wrap(&projectiles[i].position, {0, 0}, {800, 800})
 	}
 }
 
